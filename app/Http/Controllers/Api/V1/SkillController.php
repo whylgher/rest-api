@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSkillRequest;
+use App\Http\Resources\V1\SkillCollection;
+use App\Http\Resources\V1\SkillResource;
 use App\Models\Skill;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class SkillController extends Controller
 {
     public function index()
     {
-        return response()->json("Skill index");
+        return new SkillCollection(Skill::all());
     }
 
     public function show(Skill $skill)
     {
-        return $skill;
+        return new SkillResource($skill);
     }
 
     public function store(StoreSkillRequest $request)
@@ -32,9 +32,9 @@ class SkillController extends Controller
         return response()->json("Skill updated");
     }
 
-    public function destroy(Skill $id)
+    public function destroy(Skill $skill)
     {
-        $skill = Skill::find($id);
         $skill->delete();
+        return response()->json("Skill deleted");
     }
 }
